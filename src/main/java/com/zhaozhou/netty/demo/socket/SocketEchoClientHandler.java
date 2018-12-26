@@ -21,8 +21,8 @@ public class SocketEchoClientHandler extends ChannelInboundHandlerAdapter{
 
 
     @Override
-    public void handlerAdded(final ChannelHandlerContext ctx) throws Exception {
-        super.handlerAdded(ctx);
+    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
+        System.out.println("client is active,now you can input!");
         try {
             new Thread(new Runnable() {
                 public void run() {
@@ -30,6 +30,7 @@ public class SocketEchoClientHandler extends ChannelInboundHandlerAdapter{
                     while (scanner.hasNextLine()){
                         String line = scanner.nextLine();
                         if(line.startsWith("##stop")){
+                            System.out.println("close client!");
                             ctx.close();
                             break;
                         }
@@ -41,6 +42,7 @@ public class SocketEchoClientHandler extends ChannelInboundHandlerAdapter{
             }).start();
         }catch (Exception e){
             e.printStackTrace();
+            ctx.close();
         }
     }
 }

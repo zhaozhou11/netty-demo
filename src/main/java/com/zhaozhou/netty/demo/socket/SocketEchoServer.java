@@ -27,14 +27,16 @@ public class SocketEchoServer {
 
 
     private static void startServer(int port){
+        //服务端事件循环线程组，个数为1
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        //客户端事件循环线程，默认个数为:processer * 2;
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
             ServerBootstrap sb = new ServerBootstrap();
             sb.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 256)
+                    .channel(NioServerSocketChannel.class)  //服务端Channel类型
+                    .option(ChannelOption.SO_BACKLOG, 256)  //客户端连接缓冲区
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override

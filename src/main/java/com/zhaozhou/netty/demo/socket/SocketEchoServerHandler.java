@@ -1,6 +1,7 @@
 package com.zhaozhou.netty.demo.socket;
 
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -13,6 +14,7 @@ import java.net.InetSocketAddress;
 /**
  * Created by zhaozhou on 2018/12/26.
  */
+@ChannelHandler.Sharable
 public class SocketEchoServerHandler extends ChannelInboundHandlerAdapter {
 
 

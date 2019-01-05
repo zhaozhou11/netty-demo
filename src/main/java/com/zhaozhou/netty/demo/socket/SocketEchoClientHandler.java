@@ -1,6 +1,7 @@
 package com.zhaozhou.netty.demo.socket;
 
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -9,6 +10,7 @@ import java.util.Scanner;
 /**
  * Created by zhaozhou on 2018/12/26.
  */
+@ChannelHandler.Sharable
 public class SocketEchoClientHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

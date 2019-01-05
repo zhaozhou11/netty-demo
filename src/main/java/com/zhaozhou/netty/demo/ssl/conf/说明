@@ -1,0 +1,36 @@
+1、单向认证秘钥及签名证书生成
+（1）生成Netty服务器公钥、私钥和证书仓库：
+    -alias server：服务器证书仓库关联的别名；
+    -keypass nettyDemo：服务器私钥密码；
+    -storepass nettyDemo：服务器秘钥库密码
+    -keystore serverStore.jks：服务器秘钥库的文件名（默认放在用户主目录下）
+keytool -genkey -alias server -keysize 2048 -validity 3650 -keyalg RSA -dname "CN=localhost" -keypass nettyDemo -storepass nettyDemo -keystore serverStore.jks
+
+（2）导出Netty服务端签名证书：
+keytool -export -alias server -keystore serverStore.jks -storepass nettyDemo -file server.cer
+
+（3）生成Netty客户端的公钥、私钥和证书仓库：
+    -alias client：客户端证书仓库关联的别名；
+    -keypass nettyDemo：客户端私钥密码；
+    -storepass nettyDemo：客户端秘钥库密码
+    -keystore clientStore.jks：客户端秘钥库的文件名（默认放在用户主目录下）
+keytool -genkey -alias client -keysize 2048 -validity 3650 -keyalg RSA -dname "CN=localhost" -keypass nettyDemo -storepass nettyDemo -keystore clientStore.jks
+
+（4）将Netty服务端的证书导入到客户端的证书仓库中：
+keytool -import -trustcacerts -alias server -file server.cer -storepass nettyDemo -keystore clientStore.jks
+
+最终生成文件：
+    conf/oneway/clientStore.jks：客户端的证书仓库（包含公钥、私钥、信任的证书仓库（服务端的证书））
+    conf/oneway/serverStore.jks：服务端的证书仓库（包含公钥、私钥、信任的证书仓库（无证书））
+    conf/oneway/server.cer：服务端字签名证书的导出文件
+
+
+2、双向认证秘钥及签名证书的生成
+前面4步和单向认证的一样，双向认证多两步：
+（5）、导出Netty的客户端的自签名证书：
+keytool -export -alias client -keystore clientStore.jks -storepass nettyDemo -file client.cer
+
+（6）、将客户端的自签名证书导入到服务器的证书仓库中：
+keytool -import -trustcacerts -alias client -file client.cer -storepass nettyDemo -keystore serverStore.jks
+
+
